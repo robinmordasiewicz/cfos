@@ -51,5 +51,5 @@ jobs:
         run: |
           ls -la
           docker import - cfos < FOS_X64_DOCKER-v7-build0255-FORTINET.tar || true
-          docker tag cfos robinmordasiewicz.ghcr.io/cfos:latest
-          docker push robinmordasiewicz.ghcr.io/cfos:latest 
+          docker tag cfos ghcr.io/robinmordasiewicz/cfos:latest
+          docker push ghcr.io/robinmordasiewicz/cfos:latest
