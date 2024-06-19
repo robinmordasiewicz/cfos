@@ -1,0 +1,65 @@
+---
+name: Build and Push container
+
+on:
+  repository_dispatch:
+    types: [features]
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-push:
+    timeout-minutes: 1440
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+
+      - name: Free Disk Space Manual
+        run: |
+          sudo apt-get remove -y --allow-remove-essential aria2 shellcheck rpm xorriso \
+            zsync gfortran-9 nginx shim-signed imagemagick libmagickcore-dev \
+            libmagickwand-dev libmagic-dev ant ant-optional kubectl \
+            mercurial apt-transport-https unixodbc-dev yarn libssl-dev snapd \
+            libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev \
+            snmp pollinate libpq-dev ruby-full subversion microsoft-edge-stable || true
+
+      - name: Set up QEMU for multi-architecture builds
+        uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3
+        with:
+          platforms: "linux/arm64,linux/amd64"
+
+      - name: Setup Docker buildx for multi-architecture builds
+        uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb
+        with:
+          use: true
+        env:
+          BUILDX_NO_DEFAULT_ATTESTATIONS: 1
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: "ghcr.io"
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: import tarball to registry
+        run: |
+          docker import - cfos < FOS_X64_DOCKER-v7-build0255-FORTINET.tar || true
+          docker tag cfos robinmordasiewicz.ghcr.io/cfos:latest
+          docker push robinmordasiewicz.ghcr.io/cfos:latest 
