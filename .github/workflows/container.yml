@@ -22,20 +22,6 @@ jobs:
       packages: write
     steps:
 
-      - name: Free Disk Space
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: true
-
-      - name: Free Disk Space Manual
-        run: |
-          sudo apt-get remove -y --allow-remove-essential aria2 shellcheck rpm xorriso \
-            zsync gfortran-9 nginx shim-signed imagemagick libmagickcore-dev \
-            libmagickwand-dev libmagic-dev ant ant-optional kubectl \
-            mercurial apt-transport-https unixodbc-dev yarn libssl-dev snapd \
-            libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev \
-            snmp pollinate libpq-dev ruby-full subversion microsoft-edge-stable || true
-
       - name: Set up QEMU for multi-architecture builds
         uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3
         with:
