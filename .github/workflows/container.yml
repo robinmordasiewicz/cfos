@@ -21,9 +21,6 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
       - name: Free Disk Space
         uses: jlumbroso/free-disk-space@main
@@ -51,6 +48,10 @@ jobs:
         env:
           BUILDX_NO_DEFAULT_ATTESTATIONS: 1
 
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
@@ -60,6 +61,7 @@ jobs:
 
       - name: import tarball to registry
         run: |
+          ls -la
           docker import - cfos < FOS_X64_DOCKER-v7-build0255-FORTINET.tar || true
           docker tag cfos robinmordasiewicz.ghcr.io/cfos:latest
           docker push robinmordasiewicz.ghcr.io/cfos:latest 
