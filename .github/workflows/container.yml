@@ -51,5 +51,29 @@ jobs:
         run: |
           ls -la
           docker load -i FOS_X64_DOCKER-v7-build0255-FORTINET.tar
+          docker tag fos ghcr.io/robinmordasiewicz/cfos:7.2.4-0255
+          docker tag fos ghcr.io/robinmordasiewicz/cfos:latest
+          docker tag fos ghcr.io/robinmordasiewicz/fos:7.2.4-0255
           docker tag fos ghcr.io/robinmordasiewicz/fos:latest
+          docker tag fos ghcr.io/robinmordasiewicz/cfos-amd64:7.2.4-0255
+          docker tag fos ghcr.io/robinmordasiewicz/cfos-amd64:latest
+          docker tag fos ghcr.io/robinmordasiewicz/fos-amd64:7.2.4-0255
+          docker tag fos ghcr.io/robinmordasiewicz/fos-amd64:latest
+          docker push ghcr.io/robinmordasiewicz/cfos:latest
+          docker push ghcr.io/robinmordasiewicz/fos:7.2.4-0255
           docker push ghcr.io/robinmordasiewicz/fos:latest
+          docker push ghcr.io/robinmordasiewicz/cfos:7.2.4-0255
+          docker push ghcr.io/robinmordasiewicz/cfos-amd64:latest
+          docker push ghcr.io/robinmordasiewicz/fos-amd64:7.2.4-0255
+          docker push ghcr.io/robinmordasiewicz/fos-amd64:latest
+          docker push ghcr.io/robinmordasiewicz/cfos-amd64:7.2.4-0255
+          docker image rm fos
+          docker load -i FOS_ARM64_DOCKER-v7-build0255-FORTINET.tar
+          docker tag fos ghcr.io/robinmordasiewicz/cfos-arm64:7.2.4-0255
+          docker tag fos ghcr.io/robinmordasiewicz/cfos-arm64:latest
+          docker tag fos ghcr.io/robinmordasiewicz/fos-arm64:7.2.4-0255
+          docker tag fos ghcr.io/robinmordasiewicz/fos-arm64:latest
+          docker push ghcr.io/robinmordasiewicz/cfos-arm64:latest
+          docker push ghcr.io/robinmordasiewicz/fos-arm64:7.2.4-0255
+          docker push ghcr.io/robinmordasiewicz/fos-arm64:latest
+          docker push ghcr.io/robinmordasiewicz/cfos-arm64:7.2.4-0255
